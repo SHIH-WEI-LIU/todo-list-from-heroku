@@ -45,12 +45,25 @@ app.post('/todos', (req, res) => {
     .catch(error => console.log(error))
 })
 
-//瀏覽特定 To-do詳細資料
+//瀏覽特定 To-do詳細資料的路由
 app.get('/todos/:id', (req, res) => {
   const id = req.params.id
   return Todo.findById(id) //從資料庫查找特定資料
     .lean()
     .then((todo) => res.render('detail', { todo }))
+    .catch(error => console.log(error))
+})
+
+//編輯todo 的路由
+app.post('/todos/:id/edit', (req, res) => {
+  const id = req.params.id
+  const name = req.body.name
+  return Todo.findById(id)
+    .then(todo => {
+      todo.name = name
+      return todo.save()
+    })
+    .then(() => res.redirect(`/todos/${id}`))
     .catch(error => console.log(error))
 })
 
