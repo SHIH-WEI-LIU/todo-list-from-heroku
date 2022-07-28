@@ -54,7 +54,16 @@ app.get('/todos/:id', (req, res) => {
     .catch(error => console.log(error))
 })
 
-//編輯todo 的路由
+//編輯todo資料的路由
+app.get('/todos/:id/edit', (req, res) => {
+  const id = req.params.id
+  return Todo.findById(id)
+    .lean()
+    .then((todo) => res.render('edit', { todo }))
+    .catch(error => console.log(error))
+})
+
+//修改特定 todo 資料的路由
 app.post('/todos/:id/edit', (req, res) => {
   const id = req.params.id
   const name = req.body.name
@@ -64,6 +73,15 @@ app.post('/todos/:id/edit', (req, res) => {
       return todo.save()
     })
     .then(() => res.redirect(`/todos/${id}`))
+    .catch(error => console.log(error))
+})
+
+//刪除todo的路由
+app.post('/todos/:id/delete', (req, res) => {
+  const id = req.params.id
+  return Todo.findById(id)
+    .then(todo => todo.remove())
+    .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
 
