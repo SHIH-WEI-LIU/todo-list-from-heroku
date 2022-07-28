@@ -1,10 +1,9 @@
 //串接模組
 const express = require('express')
 const mongoose = require('mongoose')
-const Todo = require('./models/todo')
-const exphbs = require('express-handlebars')
-// 引用 body-parser
-const bodyParser = require('body-parser')
+const Todo = require('./models/todo') //todo.js的模組
+const exphbs = require('express-handlebars') //樣版引擎
+const bodyParser = require('body-parser') // 引用 body-parser
 
 const app = express()
 
@@ -38,11 +37,20 @@ app.get('/todos/new', (req, res) => {
   return res.render('new')
 })
 
-//設定post路由
+//設定post路由（要記得設定body-parser）
 app.post('/todos', (req, res) => {
   const name = req.body.name       // 從 req.body 拿出表單裡的 name 資料
   return Todo.create({ name })     // 存入資料庫
     .then(() => res.redirect('/')) // 新增完成後導回首頁
+    .catch(error => console.log(error))
+})
+
+//瀏覽特定 To-do詳細資料
+app.get('/todos/:id', (req, res) => {
+  const id = req.params.id
+  return Todo.findById(id) //從資料庫查找特定資料
+    .lean()
+    .then((todo) => res.render('detail', { todo }))
     .catch(error => console.log(error))
 })
 
