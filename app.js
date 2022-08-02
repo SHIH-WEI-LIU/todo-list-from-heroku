@@ -3,7 +3,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const Todo = require('./models/todo') //todo.js的模組
 const exphbs = require('express-handlebars') //樣版引擎
-const bodyParser = require('body-parser') // 引用 body-parser
+const bodyParser = require('body-parser') // 引用 body-parser(用來抓取res.body)
 
 const app = express()
 
@@ -37,7 +37,7 @@ app.get('/todos/new', (req, res) => {
   return res.render('new')
 })
 
-//設定post路由（要記得設定body-parser）
+//設定post路由（要記得設定body-parser）(todos 是因為<form action="/todos" method="POST">)
 app.post('/todos', (req, res) => {
   const name = req.body.name       // 從 req.body 拿出表單裡的 name 資料
   return Todo.create({ name })     // 存入資料庫
@@ -54,7 +54,7 @@ app.get('/todos/:id', (req, res) => {
     .catch(error => console.log(error))
 })
 
-//編輯todo資料的路由
+//編輯todo資料頁面的路由
 app.get('/todos/:id/edit', (req, res) => {
   const id = req.params.id
   return Todo.findById(id)
