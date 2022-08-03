@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const Todo = require('./models/todo') //todo.js的模組
 const exphbs = require('express-handlebars') //樣版引擎
 const bodyParser = require('body-parser') // 引用 body-parser(用來抓取res.body)
+const methodOverride = require('method-override') // 載入 method-override
 
 const app = express()
 
@@ -22,6 +23,8 @@ app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 // 用 app.use 規定每一筆請求都需要透過 body-parser 進行前置處理
 app.use(bodyParser.urlencoded({ extended: true }))
+// 設定每一筆請求都會透過 methodOverride 進行前置處理
+app.use(methodOverride('_method'))
 
 //路由設定
 //瀏覽所有todo(首頁)
@@ -65,7 +68,7 @@ app.get('/todos/:id/edit', (req, res) => {
 })
 
 //修改特定 todo 資料的路由
-app.post('/todos/:id/edit', (req, res) => {
+app.put('/todos/:id', (req, res) => {
   const id = req.params.id
   const { name, isDone } = req.body
   return Todo.findById(id)
@@ -79,7 +82,7 @@ app.post('/todos/:id/edit', (req, res) => {
 })
 
 //刪除todo的路由
-app.post('/todos/:id/delete', (req, res) => {
+app.delete('/todos/:id', (req, res) => {
   const id = req.params.id
   return Todo.findById(id)
     .then(todo => todo.remove())
