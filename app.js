@@ -5,6 +5,7 @@ const bodyParser = require('body-parser') // 引用 body-parser(用來抓取res.
 const methodOverride = require('method-override') // 載入 method-override
 const routes = require('./routes') //引入路由器時，路徑設定為 /routes 就會自動去尋找目錄下叫做 index 的檔案
 require('./config/mongoose') //載入mongoose
+const PORT = process.env.PORT || 3000 //如果在 Heroku 環境則使用 process.env.PORT，否則為本地環境，使用 3000 
 
 const app = express()
 
@@ -16,9 +17,9 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // 設定每一筆請求都會透過 methodOverride 進行前置處理
 app.use(methodOverride('_method'))
 // 將 request 導入路由器
-app.use(routes) 
+app.use(routes)
 
 //監聽網頁
-app.listen(3000, () => {
-  console.log('App is running on http://localhost:3000.')
+app.listen(PORT, () => {
+  console.log(`App is running on http://localhost:${PORT}.`)
 })
