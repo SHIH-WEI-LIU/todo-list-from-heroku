@@ -4,6 +4,7 @@ const exphbs = require('express-handlebars') //樣版引擎
 const bodyParser = require('body-parser') // 引用 body-parser(用來抓取res.body)
 const methodOverride = require('method-override') // 載入 method-override
 const routes = require('./routes') //引入路由器時，路徑設定為 /routes 就會自動去尋找目錄下叫做 index 的檔案
+const usePassport = require('./config/passport')//載入config/passport
 require('./config/mongoose') //載入mongoose
 const session = require('express-session')
 const PORT = process.env.PORT || 3000 //如果在 Heroku 環境則使用 process.env.PORT，否則為本地環境，使用 3000 
@@ -23,8 +24,11 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }))
+//呼叫 Passport 函式並傳入 app
+usePassport(app)
 // 將 request 導入路由器
 app.use(routes)
+
 
 //監聽網頁
 app.listen(PORT, () => {
