@@ -22,12 +22,12 @@ module.exports = app => {
   }))
   // 設定序列化與反序列化
   passport.serializeUser((user, done) => {
-    done(null, user.id)
+    done(null, user._id)
   })
   passport.deserializeUser((id, done) => {
     User.findById(id)
       .lean()
-      .then(user => done(null, user))
-      .catch(err => done(err, null))
+      .then(user => done(null, user))//查詢 DB → 程式運作正常 → 回傳查找的結果 user
+      .catch(err => done(err, null))//查詢 DB → 程式運作錯誤 → 回傳錯誤
   })
 }

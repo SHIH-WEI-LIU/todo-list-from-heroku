@@ -9,7 +9,7 @@ router.get('/new', (req, res) => {
 //設定post路由)（要記得設定body-parser）(todos 是因為<form action="/todos" method="POST">)
 router.post('/', (req, res) => {
   const name = req.body.name       // 從 req.body 拿出表單裡的 name 資料
-  const userId = req.user._id
+  const userId = req.user._id      //從序列化中的 done(null, user._id)取出user._id
   return Todo.create({ name, userId })     // 存入資料庫
     .then(() => res.redirect('/')) // 新增完成後導回首頁
     .catch(error => console.log(error))

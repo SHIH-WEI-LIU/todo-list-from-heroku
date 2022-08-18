@@ -2,7 +2,7 @@
   <div class="col-md-6 m-auto">
     <div class="card card-body">
       <h1 class="text-center mt-3">Login</h1>
-
+      {{> message}} {{!-- 只要看到大於符號 >，Handlebars 就會去 partials 資料夾下尋找符合名稱的樣板 --}}
       <form action="/users/login" method="POST">
         <div class="mb-3">
           <label for="email" class="mb-2">Email</label>
