@@ -17,7 +17,7 @@ router.post('/', (req, res) => {
 
 //瀏覽特定 To-do詳細資料的路由
 router.get('/:id', (req, res) => {
-  const id = req.params.id
+  const _id = req.params.id
   const userId = req.user._id
   return Todo.findOne({ _id, userId }) //從資料庫查找特定資料
     .lean()
@@ -27,7 +27,7 @@ router.get('/:id', (req, res) => {
 
 //(編輯todo資料頁面的路由
 router.get('/:id/edit', (req, res) => {
-  const id = req.params.id
+  const _id = req.params.id
   const userId = req.user._id
   return Todo.findOne({ _id, userId })
     .lean()
@@ -36,7 +36,7 @@ router.get('/:id/edit', (req, res) => {
 })
 //修改特定 todo 資料的路由)
 router.put('/:id', (req, res) => {
-  const id = req.params.id
+  const _id = req.params.id
   const userId = req.user._id
   const { name, isDone } = req.body
   return Todo.findOne({ _id, userId })
@@ -45,13 +45,13 @@ router.put('/:id', (req, res) => {
       todo.isDone = isDone === 'on'
       return todo.save()
     })
-    .then(() => res.redirect(`/todos/${id}`))
+    .then(() => res.redirect(`/todos/${_id}`))
     .catch(error => console.log(error))
 })
 
 //刪除todo的路由
 router.delete('/:id', (req, res) => {
-  const id = req.params.id
+  const _id = req.params.id
   const userId = req.user._id
   return Todo.findOne({ _id, userId })
     .then(todo => todo.remove())
